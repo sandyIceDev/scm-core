@@ -1,0 +1,21 @@
+{
+  "name": "scm-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "mongoose": "^7.0.4",
+    "svg-captcha": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
