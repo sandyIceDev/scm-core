@@ -12,6 +12,7 @@ async function initdb() {
     let uri = `mongodb://${MONGO_USERNAME != '' ? MONGO_USERNAME+":"+MONGO_PASSWORD+"@" : ""}${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE_NAME}`
     await mongoose.connect(uri,options);
 }
+
 module.exports = {
     initdb
 }
