@@ -6,6 +6,7 @@ let {Update} = require("../../models/update");
 class WebSocketHandler{
     constructor(emitter){
         let peers = {};
+        this.peers = peers;
         this.emitter = emitter;
         let router = express.Router();
 
@@ -13,7 +14,8 @@ class WebSocketHandler{
             let update = await Update.findById(updateId);
             if(update != null){
                if(peers.hasOwnProperty(update.user)){
-                   peers[update.user].send(update);
+                    let item = update.toJSON();
+                   peers[update.user].send(JSON.stringify(item));
                    await Update.deleteOne({"_id":update._id});
                }
             }

@@ -8,11 +8,7 @@ const PvChatStatus = {
 }
 
 const PvChatSchema = new mongoose.Schema({
-    creator:{
-        type:String,
-        ref:"User"
-    },
-    status:{type:Number,default:PvChatStatus.pending},
+    status:{type:Number,default:PvChatStatus.pending}
 },{_id:false});
 
 

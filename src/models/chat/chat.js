@@ -5,7 +5,7 @@ const { channelSchema } = require("./channel");
 const { PvChatSchema } = require("./private");
 const { MeChatSchema } = require("./me");
 
-const chatType ={
+const ChatType ={
   private:0,
   group:1,
   channel:2,
@@ -24,7 +24,12 @@ const chatSchema = new mongoose.Schema({
     channel:{type:channelSchema,required:false},
     group:{type:groupSchema,required:false},
     me:{type:MeChatSchema,required:false},
-    chatType:{type:Number,default:chatType.private},
+    chatType:{type:Number,default:ChatType.private},
+    creator:{
+      type:String,
+      ref:"User",
+      required:true
+  },
     nonce:{
       type:Number,
       default:crypto.randomInt(1000,9999)
@@ -33,4 +38,4 @@ const chatSchema = new mongoose.Schema({
 
 
 const Chat = mongoose.model('Chat', chatSchema);
-module.exports = {Chat,chatType};
+module.exports = {Chat,ChatType};

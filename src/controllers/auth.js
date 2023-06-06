@@ -60,15 +60,15 @@ router.post("/signup",async (req,res,next)=>{
                     result.message = "please verify your email address";
                 }catch(e){
                     console.log(e);
-                    returnnext({message:"fail to send activation code",code:503});
+                    return next({message:"fail to send activation code",code:503});
                 }
                 result.ok=true;
                 result.uuid = user._id.toString();
             }catch(e){
                 if(e.message.includes("User validation failed"))
-                    returnnext({message:e.message,code:400});
+                    return next({message:e.message,code:400});
                 else 
-                    returnnext(e);
+                    return next(e);
             }
         }else
             returnnext({message:"username already exist",code:409});

@@ -12,6 +12,7 @@ const UpdateType = {
 const updateSchema = new mongoose.Schema({
     user: {
         type: String,
+        ref:"User",
         required:true
     },
     type:{type:Number,required:true},
