@@ -14,5 +14,8 @@ async function initdb() {
 }
 
 module.exports = {
-    initdb
+    initdb,
+    disconnect: done => {
+        mongoose.disconnect().finally(done);
+    }
 }

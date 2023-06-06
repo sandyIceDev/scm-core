@@ -18,7 +18,7 @@ const psk = {
 const { UUID,String,Number,Boolean,Map,ObjectId} = mongoose.Schema.Types;
 
 const userSchema = new mongoose.Schema({
-    _id: {type:UUID,default:randomUUID()},
+    _id: {type:String,default:randomUUID()},
     name: String,
     username:{type:String, unique : true},
     email:{
@@ -31,14 +31,17 @@ const userSchema = new mongoose.Schema({
         message: props => `your email address is not valid`
       }
     },
-    password:{
+    password:{ // for security reason we just accept hash(sha256) of password
         type:String, 
         validate: {
             validator: function(v) {
               if(this.isModified("password"))
-                return passwordStrength(v).value === "Strong"
+              {
+                const regexExp = /^[a-f0-9]{64}$/gi;
+                return regexExp.test(v);
+              }
             },
-            message: props => `your password is not strong`
+            message: props => `your password must be in form of sha256 hex`
           }
         },
     activationCode: {type:Number,required:false},
@@ -55,10 +58,12 @@ const userSchema = new mongoose.Schema({
     credentials:[
       {
         chatId:{type:ObjectId ,ref:"Chat",required:true},
-        psk:{type:String,required:true},
+        psk:{type:String,required:true}, // we store pre shared key for each chat in encrypted format (method ksa1)
         method:{type:Number,required:true,default:psk.method.ksa1},
       }
-    ]
+    ],
+    publicKey:{type:String,required:true},
+    privateKey:{type:String,required:true}
 },{timestamps:true});
 
 userSchema.pre('save', function (next) {
@@ -67,7 +72,7 @@ userSchema.pre('save', function (next) {
       return next();
     }
   
-    const hashedPassword = crypto.createHash('sha256')
+    const hashedPassword = crypto.createHash('sha256') // we accept password just in hash format (then hash it again) at the save time
       .update(this.password)
       .digest('hex');
   
@@ -82,7 +87,7 @@ userSchema.methods.generateCode = function (password) {
   return code;
 };
 
-userSchema.methods.checkPassword = function (password) {
+userSchema.methods.checkPassword = function (password) { // we also check hash of password with (doubled hashed) stored password
     const hashedPassword = crypto.createHash('sha256')
       .update(password)
       .digest('hex');
