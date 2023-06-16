@@ -13,11 +13,11 @@ const messageSchema = new mongoose.Schema({
         ref:"Chat",
         required:true
     },
-    content:{
+    content:{  
         type:String,
         required:true
     },
-    seen:{type:Number ,default:0}
+    seen:{type:Boolean ,default:false}
 },{timestamps:true});
 
 
