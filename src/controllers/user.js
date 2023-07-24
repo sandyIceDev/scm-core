@@ -11,6 +11,7 @@ router.get("/me", async (req,res,next)=>{
     data = {
         username:user.username,
         uuid,
+        private:user.privateKey,
         name:user.name,
         email:user.email,
     }

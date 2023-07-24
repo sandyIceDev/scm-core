@@ -19,8 +19,8 @@ router.post("/send",async (req,res,next)=>{
     if(chat!=null && chat.peers.includes(req.user.uuid)){
         let message = await Message.create({chat:req.body.chatid,user:req.user.uuid,content:req.body.content});
         message.save();
-        for(let peer in chat.peers){
-            new Syncer().getInstance().emitter.emit("sendUpdate",{updateType:UpdateType.newMessage,uuid:peer,data:{
+        for(let i in chat.peers){
+            new Syncer().getInstance().emitter.emit("sendUpdate",{updateType:UpdateType.newMessage,uuid:chat.peers[i],data:{
                 ...message
             }});
         }

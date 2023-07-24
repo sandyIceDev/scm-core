@@ -22,8 +22,8 @@ router.post("/request",async (req,res,next)=>{
 
             let check = await Chat.findOne({peers:[req.user.uuid],chatType:ChatType.me});
             if(check == null){
-                let chat = await Chat.create({peers:[peer._id],chatType:ChatType.me});
-                res.json({"ok":true,"message":"save message created"}).end();
+                let chat = await Chat.create({peers:[peer._id],chatType:ChatType.me,creator:req.user.uuid});
+                res.json({"ok":true,"message":"save message created",chat:chat.toJSON()}).end();
             }else{
                 return next({message:"save message already exist",code:400});
             }
