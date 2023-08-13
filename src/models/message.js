@@ -19,6 +19,10 @@ const messageSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    signature:{
+        type:String,
+        required:true
+    },
     type:{
         type:Number,
         default:MessageType.text,
