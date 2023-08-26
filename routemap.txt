@@ -1,0 +1,71 @@
+endpoint diagram
+/api
+	/admin
+		/user
+1			/add
+2			/update
+3			/del
+4			/
+	/user
+5		/me
+6		/credentials
+	/chat
+7		/list
+8		/request
+9		/feedback
+	/message
+10		/list
+11		/send
+	/auth
+12		/login
+			->username
+			->password
+			<-ok true|false
+			<-token jwt_access_token
+13		/signup
+			->name
+			->username
+			->password
+			->email
+			->publicKey
+			->privateKey
+			<-ok true|false
+			<-message error_message | activation_message
+			<-uuid
+14		/resend/code
+			->uuid
+			<-ok true|false
+			<-message error_message
+15		/verify
+			->uuid
+			->code
+			<-ok true|false
+			<-message error_message | success_message
+		
+	/ws
+16		/:uuid
+middleware diagram
+auth :in-header:(jwt-access-token)
+
+/api	->(auth.admin)->	/admin/*
+	->(auth)->		/user/*
+	->(auth)->		/chat/*
+	->(auth)->		/message/*
+				/auth/*
+				/ws/*
+				
+sequence diagram
+(signup)
+13.signup -> 15.verify -> 12.login
+
+(login)
+12.login -> 5.me
+
+(create chat)
+
+
+	
+	
+	
+	
+	
